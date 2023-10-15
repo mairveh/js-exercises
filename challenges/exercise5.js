@@ -10,8 +10,13 @@
  * @param {Array} arr
  * @returns {Number}
  */
+const sumVal = 0
 export const sumMultiples = (arr) => {
 	if (arr === undefined) throw new Error('arr is required');
+	const sumVal = 0
+	return arr.reduce((accumulator, currentValue) => {
+		return ((currentValue%3===0 || currentValue%5===0)?currentValue:0)+accumulator
+	}, sumVal)
 };
 
 /**
@@ -21,6 +26,7 @@ export const sumMultiples = (arr) => {
  */
 export const isValidDNA = (str) => {
 	if (str === undefined) throw new Error('str is required');
+	return str!=='' && Array.from(str).filter((item) => !(['C','G','T','A'].includes(item))).length==0
 };
 
 /**
@@ -30,6 +36,13 @@ export const isValidDNA = (str) => {
  */
 export const getComplementaryDNA = (str) => {
 	if (str === undefined) throw new Error('str is required');
+	const dnaPairs = {
+		'T':'A',
+		'C':'G',
+		'A':'T',
+		'G':'C'
+	}
+	return Array.from(str).map((item) => dnaPairs[item]).join('').toString()
 };
 
 /**
@@ -39,6 +52,10 @@ export const getComplementaryDNA = (str) => {
  */
 export const isItPrime = (n) => {
 	if (n === undefined) throw new Error('n is required');
+	for(let i=2, s=Math.sqrt(n); i<=s; i++) {
+		if(n%i===0) return false
+	}
+	return n>1
 };
 
 /**
@@ -55,6 +72,11 @@ export const isItPrime = (n) => {
 export const createMatrix = (n, fill) => {
 	if (n === undefined) throw new Error('n is required');
 	if (fill === undefined) throw new Error('fill is required');
+	const matrix = Array(n)
+	for(let i=0; i<n; i++) {
+		matrix[i] = new Array(n).fill(fill)
+	}
+	return matrix
 };
 
 /**
@@ -72,4 +94,11 @@ export const createMatrix = (n, fill) => {
 export const areWeCovered = (staff, day) => {
 	if (staff === undefined) throw new Error('staff is required');
 	if (day === undefined) throw new Error('day is required');
+	let matchingDays = 0
+	staff.forEach((s) => {
+		matchingDays += s.rota.reduce((accumulator, currentValue) => {
+			return accumulator+(currentValue===day?1:0)
+		}, 0)
+	})
+	return matchingDays>2
 };
