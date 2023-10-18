@@ -23,8 +23,7 @@ export function checkIngredients(menu, ingredient) {
 	if (menu === undefined) throw new Error('menu is required');
 	if (!ingredient) throw new Error('ingredient is required');
 	// Your code here!
-	const ingredientFound = false
-	return menu.map(m => m.ingredients.includes(ingredient)).reduce((accumulator, currentValue) => accumulator || currentValue, ingredientFound)
+	return menu.some((item) => item.ingredients.includes(ingredient))
 }
 
 export function duplicateNumbers(arr1, arr2) {

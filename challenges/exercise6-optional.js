@@ -8,6 +8,7 @@
  */
 export const sumDigits = (n) => {
 	if (n === undefined) throw new Error('n is required');
+	return Array.from(n.toString()).reduce((accumulator, currentValue) => parseInt(accumulator)+parseInt(currentValue), 0)
 };
 
 /**
@@ -25,6 +26,11 @@ export const createRange = (start, end, step) => {
 		console.log(
 			"FYI: Optional step parameter not provided. Remove this check once you've handled the optional step!"
 		);
+	const arr = []
+	for(let i=start; i<=end; i+=step) {
+		arr.push(i)
+	}
+	return arr
 };
 
 /**
@@ -59,6 +65,8 @@ export const createRange = (start, end, step) => {
 export const getScreentimeAlertList = (users, date) => {
 	if (users === undefined) throw new Error('users is required');
 	if (date === undefined) throw new Error('date is required');
+	const datedUsers = users.filter((u) => u.screentime)
+	console.log(datedUsers)
 };
 
 /**
