@@ -65,8 +65,17 @@ export const createRange = (start, end, step) => {
 export const getScreentimeAlertList = (users, date) => {
 	if (users === undefined) throw new Error('users is required');
 	if (date === undefined) throw new Error('date is required');
-	const datedUsers = users.filter((u) => u.screentime)
-	console.log(datedUsers)
+	
+	const filteredUsers = []
+	users.forEach((user) => 
+		{
+			const highScreenTimeOnDate = Object.values(user.screenTime).filter((screen) => 
+				(screen.date===date) && ((Object.values(screen.usage).reduce((acc, curr) => acc+curr, 0))>100))
+			
+			if(highScreenTimeOnDate.length>0) filteredUsers.push(user.username)
+		}
+	)
+	return filteredUsers
 };
 
 /**
@@ -81,6 +90,21 @@ export const getScreentimeAlertList = (users, date) => {
  */
 export const hexToRGB = (hexStr) => {
 	if (hexStr === undefined) throw new Error('hexStr is required');
+	const mapping = {
+		'A': 10,
+		'B': 11,
+		'C': 12,
+		'D': 13,
+		'E': 14,
+		'F': 15
+	}
+
+	const colours = [hexStr.slice(1,3), hexStr.slice(3,5), hexStr.slice(5,7)]
+
+	const rgbColours = colours.map((c) =>
+		(isNaN(parseInt(c[1]))?mapping[c[1]]:parseInt(c[1]))+((isNaN(parseInt(c[0]))?mapping[c[0]]:parseInt(c[0])))*16)
+
+	return `rgb(${rgbColours[0]},${rgbColours[1]},${rgbColours[2]})`
 };
 
 /**
@@ -95,4 +119,50 @@ export const hexToRGB = (hexStr) => {
  */
 export const findWinner = (board) => {
 	if (board === undefined) throw new Error('board is required');
+
+	for(let i=0; i<board.length; i++) {
+		let rowXCount = 0
+		let row0Count = 0
+		for(let j=0; j<board.length; j++) {
+			if(board[i][j]==="X") rowXCount++
+			else if (board[i][j]==="0") row0Count++
+		}
+		if(rowXCount===3) return "X"
+		else if(row0Count===3) return "0"
+	}
+	
+	for(let i=0; i<board.length; i++) {
+		let rowXCount = 0
+		let row0Count = 0
+		for(let j=0; j<board.length; j++) {
+			if(board[j][i]==="X") rowXCount++
+			else if (board[j][i]==="0") row0Count++
+		}
+		if(rowXCount===3) return "X"
+		else if(row0Count===3) return "0"
+	}
+
+	for(let i=0; i<board.length; i++) {
+		let rowXCount = 0
+		let row0Count = 0
+		for(let j=i; j<board.length; j++) {
+			if(board[i][j]==="X") rowXCount++
+			else if (board[i][j]==="0") row0Count++
+		}
+		if(rowXCount===3) return "X"
+		else if(row0Count===3) return "0"
+	}
+
+	for(let i=(board.length-1); i>-0; i--) {
+		let rowXCount = 0
+		let row0Count = 0
+		for(let j=i; j>=0; j--) {
+			if(board[i][j]==="X") rowXCount++
+			else if (board[i][j]==="0") row0Count++
+		}
+		if(rowXCount===3) return "X"
+		else if(row0Count===3) return "0"
+	}
+
+	return null
 };

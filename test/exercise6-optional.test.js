@@ -47,6 +47,7 @@ describe('getScreentimeAlertList', () => {
 
 describe('hexToRGB', () => {
     test('transform the hex code into an RGB code in the format: rgb(255,17,51)', () => {
+		expect(hexToRGB('#ACEBA3')).toEqual('rgb(172,235,163)');
 		expect(hexToRGB('#FF1133')).toEqual('rgb(255,17,51)');
 	});
 });
